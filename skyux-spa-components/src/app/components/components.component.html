@@ -1,0 +1,500 @@
+<div skyBackToTop>
+    <div>
+        <h2>Avatar</h2>
+        <sky-avatar [name]="name" [src]="src" [canChange]="true" (avatarChanged)="updateSrc($event)">
+        </sky-avatar>
+        <sky-checkbox [(ngModel)]="showImage">
+            <sky-checkbox-label>Show image</sky-checkbox-label>
+        </sky-checkbox>
+    </div>
+
+
+    <div>
+        <h2> Colorpicker </h2>
+        <sky-colorpicker-demo></sky-colorpicker-demo>
+        <sky-colorpicker-reactive-demo></sky-colorpicker-reactive-demo>
+        <sky-colorpicker-template-driven-demo></sky-colorpicker-template-driven-demo>
+    </div>
+
+
+    <div>
+        <h2> Confirm </h2>
+        <div style="margin-bottom: 20px;">
+            <button aria-haspopup="dialog" class="sky-btn sky-btn-default sky-margin-inline-default" type="button" (click)="openOKConfirm()"> OK confirm </button>
+
+            <button aria-haspopup="dialog" class="sky-btn sky-btn-default sky-margin-inline-default" type="button" (click)="openYesCancelConfirm()"> Yes/cancel confirm </button>
+
+            <button aria-haspopup="dialog" class="sky-btn sky-btn-default sky-margin-inline-default" type="button" (click)="openYesCancelConfirmWithBody()"> Confirm with body </button>
+
+            <button aria-haspopup="dialog" class="sky-btn sky-btn-default sky-margin-inline-default" type="button" (click)="openYesNoCancelConfirm()"> Yes/no/cancel confirm </button>
+
+            <button aria-haspopup="dialog" class="sky-btn sky-btn-default sky-margin-inline-default" type="button" (click)="openCustomConfirm()"> Custom confirm </button>
+        </div>
+
+        <sky-alert *ngIf="selectedAction && selectedText">
+            You selected button "{{ selectedText }}" which has an action of "{{ selectedAction }}."
+        </sky-alert>
+        <sky-alert *ngIf="selectedAction && !selectedText">
+            You selected the "{{ selectedAction }}" action.
+        </sky-alert>
+    </div>
+
+
+    <div>
+        <h2>Country Field</h2>
+        <form [formGroup]="countryForm">
+            <sky-country-field formControlName="countryControl">
+            </sky-country-field>
+        </form>
+    </div>
+
+
+    <div>
+        <h2>Copy To Clipboard</h2>
+        <div #divReference>
+            <h3> Text to copy </h3>
+            <p>
+                The copy to clipboard component copies the text within the
+                <sky-code>div</sky-code> element to the clipboard.
+            </p>
+        </div>
+        <sky-copy-to-clipboard buttonText="Copy" buttonClickedText="Copied!" [copyTarget]="divReference">
+        </sky-copy-to-clipboard>
+
+        <div style="padding-top: 30px;">
+            <b>Paste here:</b>
+            <br>
+            <textarea rows="5" style="width:100%;"> </textarea>
+        </div>
+    </div>
+
+
+    <div>
+        <h2>Buttons</h2>
+        <button class="sky-btn sky-btn-primary"> Primary Button </button>
+        <button class="sky-btn sky-btn-default"> Default Button </button>
+        <button class="sky-btn sky-btn-link"> Link </button>
+        <button class="sky-btn sky-btn-link-inline"> Inline Link </button>
+        <button class="sky-btn-disabled"> Disabled Button </button>
+    </div>
+
+
+    <div>
+        <h2>Wizard</h2>
+        <button type="button" class="sky-btn sky-btn-default" (click)="openWizard()"> Open wizard </button>
+    </div>
+
+
+    <div>
+        <h2>Code</h2>
+        <p>
+            The component formats code snippets such as
+            <sky-code>sky-code</sky-code>, and
+            <sky-code>escapeCharacters="true"</sky-code> renders special characters as text. Example: "<span escapeCharacters="true">span tag content</span>."
+        </p>
+        <p>
+            Otherwise, the component renders special characters as code. Example: "
+            <sky-code>span tag content</sky-code>."
+        </p>
+    </div>
+
+
+    <div>
+        <h2>Code Block</h2>
+        <h3>Code block with hidden header</h3>
+        <sky-code-block languageType="typescript" hideHeader="true" ngPreserveWhitespaces="true">
+            // This code block illustrates a custom implementation of SkyAppLocaleProvider in the app-extras.module.ts file. // To see the code block in place within the SKY UX documentation website, go to: // https://developer.blackbaud.com/skyux/learn/get-started/advanced/localization#provide-a-custom-locale-provider
+            import {{ '{' }} NgModule } from '@angular/core'; import {{ '{' }} TestLocaleProvider } from './test-locale-provider' @NgModule({{ '{' }} providers: [{{ '{' }} provide: SkyAppLocaleProvider, useClass: TestLocaleProvider }] }) export class
+            AppExtrasModule {{ '{' }} }
+        </sky-code-block>
+    </div>
+
+
+    <div>
+        <h2>Action Button</h2>
+        <sky-action-button-container>
+            <sky-action-button (actionClick)="filterActionClick()">
+                <sky-action-button-icon iconType="filter">
+                </sky-action-button-icon>
+                <sky-action-button-header>
+                    Build a new list
+                </sky-action-button-header>
+                <sky-action-button-details>
+                    Start from scratch and fine-tune with filters
+                </sky-action-button-details>
+            </sky-action-button>
+
+            <sky-action-button (actionClick)="openActionClick()">
+                <sky-action-button-icon iconType="folder-open-o">
+                </sky-action-button-icon>
+                <sky-action-button-header>
+                    Open a saved list
+                </sky-action-button-header>
+                <sky-action-button-details>
+                    Open a list with filters saved in the web view
+                </sky-action-button-details>
+            </sky-action-button>
+
+            <sky-action-button [permalink]="url">
+                <sky-action-button-icon iconType="link">
+                </sky-action-button-icon>
+                <sky-action-button-header>
+                    Open a link
+                </sky-action-button-header>
+                <sky-action-button-details>
+                    Open a link
+                </sky-action-button-details>
+            </sky-action-button>
+
+            <sky-action-button [permalink]="routerlink">
+                <sky-action-button-icon iconType="link">
+                </sky-action-button-icon>
+                <sky-action-button-header>
+                    Open a router link
+                </sky-action-button-header>
+                <sky-action-button-details>
+                    Open a router link
+                </sky-action-button-details>
+            </sky-action-button>
+        </sky-action-button-container>
+    </div>
+
+
+    <div>
+        <h2>Button Styles</h2>
+        <button type="button" class="sky-btn" (click)="Clicked('Basic')">Basic</button>
+        <button type="button" class="sky-btn-default" (click)="Clicked('Default')">Default</button>
+        <button type="button" class="sky-btn-primary" (click)="Clicked('Primary')">Primary</button>
+        <button type="button" class="sky-btn-success" (click)="Clicked('Success')">Success</button>
+        <button type="button" class="sky-btn-info" (click)="Clicked('Info')">Info</button>
+        <button type="button" class="sky-btn-warning" (click)="Clicked('Warning')">Warning</button>
+        <button type="button" class="sky-btn-danger" (click)="Clicked('Danger')">Danger</button>
+        <button type="button" class="sky-btn-link" (click)="Clicked('Link')">Link</button>
+    </div>
+
+
+    <div>
+        <h2>Cards</h2>
+        <sky-card [selectable]="showCheckbox">
+            <sky-card-title *ngIf="showTitle">Large card</sky-card-title>
+            <sky-card-content *ngIf="showContent">
+                This card demonstrates the amount of space that is available for a card that uses the default large size. If the content does not require this much space, you can set the card size to small. The type of content to display in the body of a card varies
+                based on what the card represents and whether it prompts users to action.
+            </sky-card-content>
+            <sky-card-actions *ngIf="showAction">
+                <button class="sky-btn sky-btn-default">Click me</button>
+            </sky-card-actions>
+        </sky-card>
+        <sky-card size="small" [selectable]="showCheckbox">
+            <sky-card-title *ngIf="showTitle">Small card</sky-card-title>
+            <sky-card-content *ngIf="showContent">
+                This card demonstrates the reduced amount of space that is available when you set the card size to small.
+            </sky-card-content>
+            <sky-card-actions *ngIf="showAction">
+                <sky-dropdown buttonType="context-menu">
+                    <sky-dropdown-menu>
+                        <sky-dropdown-item>
+                            <button type="button"> Action </button>
+                        </sky-dropdown-item>
+                    </sky-dropdown-menu>
+                </sky-dropdown>
+            </sky-card-actions>
+        </sky-card>
+        <div>
+            <ul class="sky-list-unstyled">
+                <li>
+                    <sky-checkbox [(ngModel)]="showTitle">
+                        <sky-checkbox-label>Show title</sky-checkbox-label>
+                    </sky-checkbox>
+                </li>
+                <li>
+                    <sky-checkbox [(ngModel)]="showContent">
+                        <sky-checkbox-label>Show content</sky-checkbox-label>
+                    </sky-checkbox>
+                </li>
+                <li>
+                    <sky-checkbox [(ngModel)]="showAction">
+                        <sky-checkbox-label>Show action</sky-checkbox-label>
+                    </sky-checkbox>
+                </li>
+                <li>
+                    <sky-checkbox [(ngModel)]="showCheckbox">
+                        <sky-checkbox-label>Show checkbox</sky-checkbox-label>
+                    </sky-checkbox>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div>
+        <h2>Character Count</h2>
+        <div style="width: 50%;">
+            <h3>
+                Reactive form setup
+            </h3>
+
+            <form novalidate [formGroup]="characterCountForm">
+                <div class="sky-form-group">
+                    <div style="display: flex;">
+                        <label class="sky-control-label" style="flex-grow: 1;"> Transaction description </label>
+
+                        <sky-character-counter-indicator #descriptionIndicator>
+                        </sky-character-counter-indicator>
+                    </div>
+
+                    <input class="sky-form-control" formControlName="description" type="text" skyCharacterCounter [skyCharacterCounterIndicator]="descriptionIndicator" [skyCharacterCounterLimit]="maxDescriptionCharacterCount">
+
+                    <div *ngIf="description.errors?.skyCharacterCounter" class="sky-error-label">
+                        Limit Transaction description to {{maxDescriptionCharacterCount}} characters.
+                    </div>
+                </div>
+
+                <div class="sky-form-group">
+                    <div style="display: flex;">
+                        <label class="sky-control-label" style="flex-grow: 1;"> Comments </label>
+
+                        <sky-character-counter-indicator #commentsIndicator>
+                        </sky-character-counter-indicator>
+                    </div>
+
+                    <textarea rows="4" class="sky-form-control" formControlName="comments" skyCharacterCounter [skyCharacterCounterIndicator]="commentsIndicator" [skyCharacterCounterLimit]="maxCommentsCharacterCount">
+            </textarea>
+
+                    <div *ngIf="comments.errors?.skyCharacterCounter" class="sky-error-label">
+                        Limit Comments to {{maxCommentsCharacterCount}} characters.
+                    </div>
+                </div>
+            </form>
+
+            <h3>
+                Template-driven form setup
+            </h3>
+
+            <div class="sky-form-group">
+                <div style="display: flex;">
+                    <label class="sky-control-label" style="flex-grow: 1;"> Transaction description </label>
+
+                    <sky-character-counter-indicator #templateDescriptionIndicator>
+                    </sky-character-counter-indicator>
+                </div>
+
+                <input class="sky-form-control" type="text" skyCharacterCounter [skyCharacterCounterIndicator]="templateDescriptionIndicator" [skyCharacterCounterLimit]="maxDescriptionCharacterCount" [(ngModel)]="transaction.description" #templateDescriptionInput="ngModel">
+
+                <div *ngIf="templateDescriptionInput.errors?.skyCharacterCounter" class="sky-error-label">
+                    Limit Transaction description to {{maxDescriptionCharacterCount}} characters.
+                </div>
+            </div>
+
+            <div class="sky-form-group">
+                <div style="display: flex;">
+                    <label class="sky-control-label" style="flex-grow: 1;"> Comments </label>
+
+                    <sky-character-counter-indicator #templateCommentsIndicator>
+                    </sky-character-counter-indicator>
+                </div>
+
+                <textarea rows="4" class="sky-form-control" skyCharacterCounter [skyCharacterCounterIndicator]="templateCommentsIndicator" [skyCharacterCounterLimit]="maxCommentsCharacterCount" [(ngModel)]="transaction.comments" #templateCommentsInput="ngModel">
+    </textarea>
+
+                <div *ngIf="templateCommentsInput.errors?.skyCharacterCounter" class="sky-error-label">
+                    Limit Comments to {{maxCommentsCharacterCount}} characters.
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+        <h2>Check Box</h2>
+        <h3>
+            Checkbox states
+        </h3>
+
+        <ul class="sky-list-unstyled">
+            <li *ngFor="let item of checkboxItems">
+                <sky-checkbox [(ngModel)]="item.checked" [disabled]="item.disabled">
+                    <sky-checkbox-label> {{ item.label }} </sky-checkbox-label>
+                </sky-checkbox>
+            </li>
+        </ul>
+
+        <h3>
+            Icon checkbox types
+        </h3>
+
+        <div>
+            <sky-checkbox *ngFor="let item of iconCheckboxItems" [disabled]="item.disabled" [icon]="item.icon" [checkboxType]="item.checkboxType" [label]="item.label" [(ngModel)]="item.checked">
+            </sky-checkbox>
+        </div>
+
+        <h3>
+            Icon checkbox group
+        </h3>
+
+        <div class="sky-switch-icon-group">
+            <sky-checkbox *ngFor="let item of iconCheckboxGroup" [icon]="item.icon" [label]="item.label" [(ngModel)]="item.checked">
+            </sky-checkbox>
+        </div>
+    </div>
+
+
+    <div>
+        <h2>Alerts</h2>
+        <sky-alert alertType="danger" [closeable]="true" [closed]="false">
+            Danger alert message
+        </sky-alert>
+
+        <sky-alert alertType="info" [closeable]="true" [closed]="false">
+            Info alert message
+        </sky-alert>
+
+        <sky-alert alertType="success" [closeable]="true" [closed]="false">
+            Success alert message
+        </sky-alert>
+
+        <sky-alert alertType="warning" [closeable]="true" [closed]="false">
+            Warning alert message
+        </sky-alert>
+    </div>
+
+
+    <div>
+        <h2>Autocomplete</h2>
+        <h2 class="sky-section-heading">
+            Reactive form setup
+        </h2>
+
+        <form class="autocomplete-demo-form" [formGroup]="reactiveForm" (ngSubmit)="submitReactiveForm()" novalidate>
+
+            <h3 class="sky-subsection-heading">
+                Basic
+            </h3>
+
+            <p>
+                The following field uses the default settings.
+            </p>
+
+            <div class="sky-form-group">
+                <label for="my-autocomplete-reactive-basic" class="sky-control-label">
+      What is your favorite color?
+    </label>
+
+                <sky-autocomplete [data]="colors">
+                    <input skyAutocomplete id="my-autocomplete-reactive-basic" type="text" formControlName="favoriteColor">
+                </sky-autocomplete>
+            </div>
+
+            <h3 class="sky-subsection-heading">
+                Advanced
+            </h3>
+
+            <div style="margin-bottom:10px;">
+                The following field:<br>
+                <ul>
+                    <li>utilizes a custom search result template,</li>
+                    <li>searches against the name and description properties,</li>
+                    <li>limits the search results to two,</li>
+                    <li>runs the search if the query is at least three characters long,</li>
+                    <li>and fires an event when a selection is made.</li>
+                </ul>
+            </div>
+
+            <div class="sky-form-group">
+                <label for="my-autocomplete-reactive-advanced" class="sky-control-label">
+      Which planet is farthest from the sun?
+    </label>
+
+                <sky-autocomplete [data]="planets" [propertiesToSearch]="['name', 'description']" [searchResultsLimit]="2" [searchResultTemplate]="planetSearchResultTemplate" [searchTextMinimumCharacters]="3" (selectionChange)="onPlanetSelection($event)">
+                    <input skyAutocomplete id="my-autocomplete-reactive-advanced" type="text" formControlName="farthestPlanet">
+                </sky-autocomplete>
+            </div>
+
+            <h3 class="sky-subsection-heading">
+                Search filters
+            </h3>
+
+            <p>
+                The following field provides a custom function that filters the data before every search attempt.
+            </p>
+
+            <div class="sky-form-group">
+                <label for="my-autocomplete-reactive-filters" class="sky-control-label">
+      Pick a color ("Red" is not available).
+    </label>
+
+                <sky-autocomplete [data]="colors" [searchFilters]="searchFilters">
+                    <input skyAutocomplete id="my-autocomplete-reactive-filters" type="text" formControlName="favoriteColor">
+                </sky-autocomplete>
+            </div>
+
+            <h3 class="sky-subsection-heading">
+                Custom search function
+            </h3>
+
+            <p>
+                The following field has a preselected value and utilizes a custom search function, as well as a custom template for the search results.
+            </p>
+
+            <div class="sky-form-group">
+                <label for="my-autocomplete-reactive-custom" class="sky-control-label">
+      Which ocean is the largest?
+    </label>
+
+                <sky-autocomplete [data]="oceans" [search]="getOceanSearchFunction()" [searchResultTemplate]="oceanSearchResultTemplate" [descriptorProperty]="'title'">
+                    <input skyAutocomplete id="my-autocomplete-reactive-custom" type="text" formControlName="largestOcean">
+                </sky-autocomplete>
+            </div>
+
+            <div class="autocomplete-demo-alert">
+                <strong>Form model:</strong>
+                <pre>{{ reactiveForm.value | json }}</pre>
+            </div>
+
+            <button class="sky-btn sky-btn-default" type="submit">
+    Submit
+  </button>
+        </form>
+
+        <h2 class="sky-section-heading">
+            Template-driven form setup
+        </h2>
+
+        <form class="autocomplete-demo-form" #myForm="ngForm" (ngSubmit)="submitTemplateForm(myForm.value)" novalidate>
+
+            <p>
+                This field uses the default settings and has a preselected value.
+            </p>
+
+            <div class="sky-form-group">
+                <label for="my-autocomplete-template-driven" class="sky-control-label">
+      What is your favorite color?
+    </label>
+
+                <sky-autocomplete [data]="colors">
+                    <input skyAutocomplete id="my-autocomplete-template-driven" type="text" name="favoriteColor" [(ngModel)]="templateDrivenModel.favoriteColor">
+                </sky-autocomplete>
+            </div>
+
+            <div class="autocomplete-demo-alert">
+                <strong>Form model:</strong>
+                <pre>{{ myForm.value | json }}</pre>
+            </div>
+
+            <button class="sky-btn sky-btn-default" type="submit">
+    Submit
+  </button>
+        </form>
+
+        <!-- Custom search result templates -->
+
+        <ng-template let-item="item" #planetSearchResultTemplate>
+            <strong>{{ item.name }}</strong><br> {{ item.description }}
+        </ng-template>
+
+        <ng-template let-item="item" #oceanSearchResultTemplate>
+            <sky-icon icon="long-arrow-right"></sky-icon>
+            {{ item.title }} &bull; ID {{ item.id }}
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<h2 class="sky-section-heading">
+    Reactive form setup
+</h2>
+
+<sky-colorpicker-reactive-demo>
+</sky-colorpicker-reactive-demo>
+
+<h2 class="sky-section-heading">
+    Template-driven form setup
+</h2>
+
+<sky-colorpicker-template-driven-demo>
+</sky-colorpicker-template-driven-demo>
+
+<h2 class="sky-section-heading">
+    Interact with a colorpicker programmatically
+</h2>
+
+<sky-colorpicker [messageStream]="colorpickerController" [showResetButton]="showResetButton" #colorPicker>
+    <input [skyColorpickerInput]="colorPicker" [(ngModel)]="model" />
+</sky-colorpicker>
+
+<p>
+    <button type="button" class="sky-btn sky-btn-primary sky-margin-inline-default" (click)="openColorpicker()">
+    Open colorpicker
+  </button>
+
+    <button type="button" class="sky-btn sky-btn-default sky-margin-inline-default" (click)="resetColorpicker()">
+    Reset colorpicker
+  </button>
+
+    <button type="button" class="sky-btn sky-btn-default sky-margin-inline-default" (click)="toggleResetButton()">
+    Toggle reset button
+  </button>
+</p>
