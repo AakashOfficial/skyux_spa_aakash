@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -13,6 +13,11 @@ import { SkyConfirmButtonAction, SkyConfirmInstance, SkyConfirmService, SkyConfi
 import { SkyModalService } from '@skyux/modals';
 
 import { SkyWizardDemoModalCustomizeComponent } from './wizard-demo-modal.component';
+
+import { SkyWaitService } from '@skyux/indicators';
+import { SkyValidators } from '@skyux/validation';
+import { SkyToken, SkyTokenSelectedEventArgs, SkyTokensMessageType, SkyTokensMessage } from '@skyux/indicators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'component',
@@ -119,11 +124,120 @@ export class ComponentComponent {
 
     public selectedText: string;
 
+    public isWaiting = false;
+
+    public reactiveForms: FormGroup;
+    public urlValidator: string;
+
+    // URL Validations
+    private createReactiveForm(): void {
+        this.reactiveForms = this.formBuilder.group({
+        url: new FormControl('', SkyValidators.url)
+        });
+    }
+
+    public color: SkyToken[];
+    public filters: SkyToken[];
+    public tokensController: Subject<SkyTokensMessage>;
+
+    private defaultColors = [
+        { name: 'Red' },
+        { name: 'Black' },
+        { name: 'Blue' },
+        { name: 'Brown' },
+        { name: 'Green' },
+        { name: 'Orange' },
+        { name: 'Pink' },
+        { name: 'Purple' },
+        { name: 'Turquoise' },
+        { name: 'White' },
+        { name: 'Yellow' }
+    ];
+
+    private selectedFilters = [
+        { label: 'Canada' },
+        { label: 'Older than 55' },
+        { label: 'Employed' },
+        { label: 'Added before 2018' }
+    ];
+
+    public ngOnDestroy() {
+        if (this.tokensController) {
+        this.tokensController.complete();
+        }
+    }
+
+    public resetColors() {
+        this.createColors();
+    }
+
+    public changeColors() {
+        this.colors = this.parseTokens([
+        { name: 'Red' },
+        { name: 'White' },
+        { name: 'Blue' }
+        ]);
+    }
+
+    public destroyColors() {
+        this.colors = undefined;
+    }
+
+    public createColors() {
+        this.colors = this.parseTokens(this.defaultColors);
+    }
+
+    public onTokenSelected(args: SkyTokenSelectedEventArgs) {
+        console.log('Token selected:', args);
+    }
+
+    public onFocusIndexUnderRange() {
+        console.log('Focus index was less than zero.');
+    }
+
+    public onFocusIndexOverRange() {
+        console.log('Focus index was greater than the number of tokens.');
+    }
+
+    public focusLastToken() {
+        if (!this.tokensController) {
+        this.tokensController = new Subject<SkyTokensMessage>();
+        }
+
+        this.tokensController.next({
+        type: SkyTokensMessageType.FocusLastToken
+        });
+    }
+
+    private parseTokens(data: any[]): SkyToken[] {
+        return data.map((item: any) => {
+        return {
+            value: item
+        } as SkyToken;
+        });
+    }
+
     constructor(
         private formBuilder: FormBuilder,
         private confirmService: SkyConfirmService,
-        private modal: SkyModalService
+        private modal: SkyModalService,
+        private waitSvc: SkyWaitService
     ) { }
+
+    // Waiting
+    public showPageWait(isBlocking: boolean) {
+        if (isBlocking) {
+        this.waitSvc.beginBlockingPageWait();
+        setTimeout(() => {
+            this.waitSvc.endBlockingPageWait();
+        }, 2000);
+        } else {
+        this.waitSvc.beginNonBlockingPageWait();
+        setTimeout(() => {
+            this.waitSvc.endNonBlockingPageWait();
+        }, 2000);
+        }
+    }
 
     // Wizard
     public openWizard(): void {
@@ -213,7 +327,12 @@ export class ComponentComponent {
     public countryForm: FormGroup;
     
     public ngOnInit(): void {
+
+        this.createColors();
+        this.filters = this.parseTokens(this.selectedFilters);
+        
         this.createForm();
+        this.createReactiveForm();
 
         this.description = this.formBuilder.control('Boys and Girls Club of South Carolina donation');
         this.comments = this.formBuilder.control(`Donation to the Boys and Girls Club will be used to refurbish safe playground equipment and purchase new laptops. The laptops will be used to complete homework and improve technological skills.`);

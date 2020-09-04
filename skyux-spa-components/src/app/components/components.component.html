@@ -10,6 +10,148 @@
 
 
     <div>
+        <h2>Page Wait</h2>
+        <button type="button" class="sky-btn sky-btn-default" (click)="isWaiting = !isWaiting">Toggle element wait</button>
+
+        <div style="height: 200px; width: 200px; margin-top: 10px;">
+            A large area that can be waited with the <code>sky-wait</code> directive.
+            <sky-wait [isWaiting]="isWaiting"> </sky-wait>
+        </div>
+
+        <button type="button" class="sky-btn sky-btn-default sky-margin-inline-default" (click)="showPageWait(true)">Show page wait</button>
+
+        <button type="button" class="sky-btn sky-btn-default" (click)="showPageWait(false)">Show non-blocking page wait</button>
+    </div>
+
+
+    <div>
+        <h2>Tokens</h2>
+        <h3 class="sky-subsection-heading"> Default setup </h3>
+
+        <p> These tokens can be navigated with the arrow keys, and they can be dismissed with the close buttons. </p>
+
+        <p>
+            <sky-tokens [(tokens)]="color"> </sky-tokens>
+        </p>
+
+        <hr>
+
+        <h3 class="sky-subsection-heading"> Non-dismissible tokens </h3>
+
+        <p> These tokens cannot be dismissed, but they can still be navigated with the arrow keys </p>
+
+        <p>
+            <sky-tokens [(tokens)]="color" [dismissible]="false"> </sky-tokens>
+        </p>
+
+        <hr>
+
+        <h3 class="sky-subsection-heading"> Non-focusable tokens </h3>
+
+        <p> These tokens cannot be focused using the tab key, but they can still be clicked and navigated with the arrow keys. </p>
+
+        <p>
+            <sky-tokens [(tokens)]="color" [dismissible]="false" [focusable]="false"> </sky-tokens>
+        </p>
+
+        <hr>
+
+        <h3 class="sky-subsection-heading"> Disabled tokens </h3>
+
+        <p> These tokens are disabled and cannot be dismissed or navigated with the arrow keys. </p>
+
+        <p>
+            <sky-tokens [(tokens)]="color" [disabled]="true"> </sky-tokens>
+        </p>
+
+        <hr>
+
+        <h3 class="sky-subsection-heading"> Token value interactions </h3>
+
+        <p>
+            <button class="sky-btn sky-btn-default sky-margin-inline-default" type="button" (click)="changeColors()"> Change tokens </button>
+
+            <button class="sky-btn sky-btn-default sky-margin-inline-default" type="button" (click)="resetColors()"> Reset tokens </button>
+
+            <button class="sky-btn sky-btn-default" type="button" (click)="destroyColors()"> Destroy tokens </button>
+        </p>
+
+        <hr>
+
+        <h3 class="sky-subsection-heading">
+            Custom setup
+        </h3>
+
+        <p> These tokens define a custom property to display their values. When users select a token, it emits an event. </p>
+
+        <p>
+            <sky-tokens displayWith="label" [(tokens)]="filters" [messageStream]="tokensController" (focusIndexOverRange)="onFocusIndexOverRange()" (focusIndexUnderRange)="onFocusIndexUnderRange()" (tokenSelected)="onTokenSelected($event)">
+                (You may also include content inside the tokens component.)
+            </sky-tokens>
+        </p>
+
+        <p> <button class="sky-btn sky-btn-default" (click)="focusLastToken()"> Focus last token </button> </p>
+    </div>
+
+
+    <div>
+        <h2>Toolbar</h2>
+        <sky-toolbar>
+            <sky-toolbar-item>
+                <button class="sky-btn sky-btn-default">Button 1</button>
+            </sky-toolbar-item>
+            <sky-toolbar-item>
+                <button class="sky-btn sky-btn-default">Button 2</button>
+            </sky-toolbar-item>
+            <sky-toolbar-view-actions>
+                <button class="sky-btn sky-btn-default sky-margin-inline-default" title="Expand all" type="button">
+                    <sky-icon icon="angle-double-down" > </sky-icon>
+                </button>
+                <button class="sky-btn sky-btn-default sky-margin-inline-default" title="Collapse all" type="button">
+                    <sky-icon icon="angle-double-up" > </sky-icon>
+                </button>
+            </sky-toolbar-view-actions>
+        </sky-toolbar>
+    </div>
+
+
+    <div>
+        <h2>URL Validations</h2>
+        <sky-fluid-grid>
+            <sky-row>
+                <sky-column screenSmall="6">
+                    <h2 class="sky-section-heading">
+                        Reactive form input validation
+                    </h2>
+                    <form [formGroup]="reactiveForms">
+                        <label> URL 
+                            <input class="sky-form-control" formControlName="url" >
+                        </label>
+                        <div *ngIf="reactiveForms.get('url').errors && reactiveForms.get('url').errors.skyUrl 
+                            && (reactiveForms.get('url').dirty && reactiveForms.get('url').touched)" class="sky-error-label">
+                            <span [hidden]="!reactiveForms.get('url').errors.skyUrl.invalid"> Enter a valid 
+                                URL with the http(s)://site.domain format. </span>
+                        </div>
+                    </form>
+                </sky-column>
+                <sky-column screenSmall="6">
+                    <h2 class="sky-section-heading">
+                        Template-driven form input validation
+                    </h2>
+                    <label> URL
+                        <input class="sky-form-control" skyUrlValidation [(ngModel)]="urlValidator" #urlInput="ngModel" >
+                    </label>
+                    <div *ngIf="urlInput.errors && urlInput.errors.skyUrl && (urlInput.dirty && urlInput.touched)" class="sky-error-label">
+                        <span [hidden]="!urlInput.errors.skyUrl.invalid"> Enter a valid URL with 
+                            the http(s)://site.domain format. </span>
+                    </div>
+                </sky-column>
+            </sky-row>
+        </sky-fluid-grid>
+    </div>
+
+
+    <div>
         <h2> Colorpicker </h2>
         <sky-colorpicker-demo></sky-colorpicker-demo>
         <sky-colorpicker-reactive-demo></sky-colorpicker-reactive-demo>
@@ -361,33 +503,23 @@
 
     <div>
         <h2>Autocomplete</h2>
-        <h2 class="sky-section-heading">
-            Reactive form setup
-        </h2>
+        <h2 class="sky-section-heading"> Reactive form setup </h2>
 
         <form class="autocomplete-demo-form" [formGroup]="reactiveForm" (ngSubmit)="submitReactiveForm()" novalidate>
 
-            <h3 class="sky-subsection-heading">
-                Basic
-            </h3>
+            <h3 class="sky-subsection-heading"> Basic </h3>
 
-            <p>
-                The following field uses the default settings.
-            </p>
+            <p> The following field uses the default settings. </p>
 
             <div class="sky-form-group">
-                <label for="my-autocomplete-reactive-basic" class="sky-control-label">
-      What is your favorite color?
-    </label>
+                <label for="my-autocomplete-reactive-basic" class="sky-control-label"> What is your favorite color? </label>
 
                 <sky-autocomplete [data]="colors">
                     <input skyAutocomplete id="my-autocomplete-reactive-basic" type="text" formControlName="favoriteColor">
                 </sky-autocomplete>
             </div>
 
-            <h3 class="sky-subsection-heading">
-                Advanced
-            </h3>
+            <h3 class="sky-subsection-heading"> Advanced </h3>
 
             <div style="margin-bottom:10px;">
                 The following field:<br>
@@ -401,27 +533,19 @@
             </div>
 
             <div class="sky-form-group">
-                <label for="my-autocomplete-reactive-advanced" class="sky-control-label">
-      Which planet is farthest from the sun?
-    </label>
+                <label for="my-autocomplete-reactive-advanced" class="sky-control-label"> Which planet is farthest from the sun? </label>
 
                 <sky-autocomplete [data]="planets" [propertiesToSearch]="['name', 'description']" [searchResultsLimit]="2" [searchResultTemplate]="planetSearchResultTemplate" [searchTextMinimumCharacters]="3" (selectionChange)="onPlanetSelection($event)">
                     <input skyAutocomplete id="my-autocomplete-reactive-advanced" type="text" formControlName="farthestPlanet">
                 </sky-autocomplete>
             </div>
 
-            <h3 class="sky-subsection-heading">
-                Search filters
-            </h3>
+            <h3 class="sky-subsection-heading"> Search filters </h3>
 
-            <p>
-                The following field provides a custom function that filters the data before every search attempt.
-            </p>
+            <p> The following field provides a custom function that filters the data before every search attempt. </p>
 
             <div class="sky-form-group">
-                <label for="my-autocomplete-reactive-filters" class="sky-control-label">
-      Pick a color ("Red" is not available).
-    </label>
+                <label for="my-autocomplete-reactive-filters" class="sky-control-label"> Pick a color ("Red" is not available). </label>
 
                 <sky-autocomplete [data]="colors" [searchFilters]="searchFilters">
                     <input skyAutocomplete id="my-autocomplete-reactive-filters" type="text" formControlName="favoriteColor">
@@ -432,14 +556,10 @@
                 Custom search function
             </h3>
 
-            <p>
-                The following field has a preselected value and utilizes a custom search function, as well as a custom template for the search results.
-            </p>
+            <p> The following field has a preselected value and utilizes a custom search function, as well as a custom template for the search results. </p>
 
             <div class="sky-form-group">
-                <label for="my-autocomplete-reactive-custom" class="sky-control-label">
-      Which ocean is the largest?
-    </label>
+                <label for="my-autocomplete-reactive-custom" class="sky-control-label"> Which ocean is the largest? </label>
 
                 <sky-autocomplete [data]="oceans" [search]="getOceanSearchFunction()" [searchResultTemplate]="oceanSearchResultTemplate" [descriptorProperty]="'title'">
                     <input skyAutocomplete id="my-autocomplete-reactive-custom" type="text" formControlName="largestOcean">
@@ -451,9 +571,7 @@
                 <pre>{{ reactiveForm.value | json }}</pre>
             </div>
 
-            <button class="sky-btn sky-btn-default" type="submit">
-    Submit
-  </button>
+            <button class="sky-btn sky-btn-default" type="submit"> Submit </button>
         </form>
 
         <h2 class="sky-section-heading">
@@ -462,14 +580,10 @@
 
         <form class="autocomplete-demo-form" #myForm="ngForm" (ngSubmit)="submitTemplateForm(myForm.value)" novalidate>
 
-            <p>
-                This field uses the default settings and has a preselected value.
-            </p>
+            <p> This field uses the default settings and has a preselected value. </p>
 
             <div class="sky-form-group">
-                <label for="my-autocomplete-template-driven" class="sky-control-label">
-      What is your favorite color?
-    </label>
+                <label for="my-autocomplete-template-driven" class="sky-control-label"> What is your favorite color? </label>
 
                 <sky-autocomplete [data]="colors">
                     <input skyAutocomplete id="my-autocomplete-template-driven" type="text" name="favoriteColor" [(ngModel)]="templateDrivenModel.favoriteColor">
@@ -481,9 +595,7 @@
                 <pre>{{ myForm.value | json }}</pre>
             </div>
 
-            <button class="sky-btn sky-btn-default" type="submit">
-    Submit
-  </button>
+            <button class="sky-btn sky-btn-default" type="submit"> Submit </button>
         </form>
 
         <!-- Custom search result templates -->
@@ -497,4 +609,93 @@
             {{ item.title }} &bull; ID {{ item.id }}
         </ng-template>
     </div>
+
+
+    <!--<div>
+        <h2>Tree View</h2>
+        <div class="sky-margin-stacked-separate">
+            <sky-fluid-grid>
+                <sky-row>
+                    <sky-column screenSmall="6">
+                        <h4 id="sky-demo-modes"> Modes </h4>
+                        <ul class="sky-list-unstyled">
+                            <li>
+                                <sky-radio name="mode" value="navigation" (change)="onModeChange($event)" [(ngModel)]="selectedMode">
+                                    <sky-radio-label> Navigation </sky-radio-label>
+                                </sky-radio>
+                            </li>
+                            <li>
+                                <sky-radio name="mode" value="readOnly" (change)="onModeChange($event)" [(ngModel)]="selectedMode">
+                                    <sky-radio-label> Read-only </sky-radio-label>
+                                </sky-radio>
+                            </li>
+                            <li>
+                                <sky-radio name="mode" value="selection" (change)="onModeChange($event)" [(ngModel)]="selectedMode">
+                                    <sky-radio-label> Selection </sky-radio-label>
+                                </sky-radio>
+                                <ul class="sky-list-unstyled" style="margin: 10px 0 10px 20px">
+                                    <li>
+                                        <sky-checkbox [disabled]="selectedMode !== 'selection' || enableCascading" [(ngModel)]="selectLeafNodesOnly">
+                                            <sky-checkbox-label> Leaf-node selection only </sky-checkbox-label>
+                                        </sky-checkbox>
+                                    </li>
+                                    <li>
+                                        <sky-radio name="selectMode" value="singleSelect" [disabled]="selectedMode !== 'selection'" (change)="onSelectModeChange($event)" [(ngModel)]="selectedSelectMode">
+                                            <sky-radio-label> Single-select </sky-radio-label>
+                                        </sky-radio>
+                                    </li>
+                                    <li>
+                                        <sky-radio name="selectMode" value="multiSelect" [disabled]="selectedMode !== 'selection'" (change)="onSelectModeChange($event)" [(ngModel)]="selectedSelectMode">
+                                            <sky-radio-label> Multi-select </sky-radio-label>
+                                        </sky-radio>
+                                        <ul class="sky-list-unstyled" style="margin: 10px 0 10px 20px">
+                                            <li>
+                                                <sky-checkbox [disabled]="selectedMode !== 'selection' || selectLeafNodesOnly || selectSingle" [(ngModel)]="enableCascading">
+                                                    <sky-checkbox-label> Enable cascading </sky-checkbox-label>
+                                                </sky-checkbox>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </sky-column>
+                    <sky-column screenSmall="6">
+                        <ul class="sky-list-unstyled">
+                            <li>
+                                <sky-checkbox [(ngModel)]="showToolbar">
+                                    <sky-checkbox-label> Include toolbar </sky-checkbox-label>
+                                </sky-checkbox>
+                            </li>
+                            <li>
+                                <sky-checkbox [(ngModel)]="showContextMenus">
+                                    <sky-checkbox-label> Include context menus </sky-checkbox-label>
+                                </sky-checkbox>
+                            </li>
+                        </ul>
+                    </sky-column>
+                </sky-row>
+            </sky-fluid-grid>
+
+            <div class="sky-padding-even-default sky-demo-container">
+                <sky-angular-tree-wrapper [readOnly]="readOnly" [selectLeafNodesOnly]="selectLeafNodesOnly" [selectSingle]="selectSingle" [showToolbar]="showToolbar">
+                    <tree-root [nodes]="nodes" [options]="treeOptions" (stateChange)="onTreeStateChange($event)" #tree>
+                        <ng-template let-index="index" let-node let-templates="templates" #treeNodeFullTemplate>
+                            <sky-angular-tree-node [index]="index" [node]="node" [templates]="templates">
+                                <sky-dropdown *ngIf="showContextMenus" buttonType="context-menu">
+                                    <sky-dropdown-menu>
+                                        <sky-dropdown-item *ngFor="let item of dropdownItems">
+                                            <button type="button" (click)="actionClicked(item.name, node)"> {{ item.name }} </button>
+                                        </sky-dropdown-item>
+                                    </sky-dropdown-menu>
+                                </sky-dropdown>
+                            </sky-angular-tree-node>
+                        </ng-template>
+                    </tree-root>
+                </sky-angular-tree-wrapper>
+            </div>
+        </div>
+    </div>-->
+
+
 </div>
